@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpao0e3xysafo"]
+
+[ext_resource type="Script" path="res://player_script.gd" id="1_8grue"]
+[ext_resource type="Texture2D" uid="uid://dwb3od4jdv07l" path="res://icon.svg" id="2_8236c"]
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+z_index = 2
+collision_layer = 2
+collision_mask = 6
+script = ExtResource("1_8grue")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.15625, 0.15625)
+texture = ExtResource("2_8236c")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(8, -10, 10, -8, 10, 8, 8, 10, -8, 10, -10, 8, -10, -8, -8, -10)
+
+[node name="iFrame" type="Timer" parent="."]
+one_shot = true

@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://dxl7tj775bwkn"]
+
+[ext_resource type="Script" path="res://bullet.gd" id="1_wvcuu"]
+[ext_resource type="Texture2D" uid="uid://cbrrragisflmx" path="res://assets/bullet_alt.png" id="2_l5uhf"]
+[ext_resource type="Script" path="res://bullet_collision_detector.gd" id="3_5qflf"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qssrf"]
+radius = 2.0
+height = 8.0
+
+[node name="Bullet" type="RigidBody2D" groups=["bullets"]]
+texture_filter = 1
+collision_layer = 8
+collision_mask = 13
+max_contacts_reported = 3
+contact_monitor = true
+script = ExtResource("1_wvcuu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_qssrf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_l5uhf")
+
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="CollisionDetector" type="RayCast2D" parent="."]
+target_position = Vector2(0, 4)
+collision_mask = 5
+script = ExtResource("3_5qflf")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]

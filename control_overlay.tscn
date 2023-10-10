@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://wltpb7ynw1kb"]
+
+[ext_resource type="Script" path="res://control_overlay.gd" id="1_eh1m7"]
+
+[node name="ControlOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_eh1m7")
+
+[node name="Controls" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 679.0
+offset_bottom = 222.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 50
+text = "Speed up (shift): false
+Movement: A S W D
+Attacking (left mouse): false
+Attack mode (q) -> (0s): normal
+Enemy spawn (z) -> (0s): true"
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 93.0
+offset_right = 679.0
+offset_bottom = 168.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 50
+text = "Score: 0
+"
+
+[node name="EnemyCount" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 109.0
+offset_right = 679.0
+offset_bottom = 184.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 50
+text = "Enemy count: 0 / 10
+"
+
+[node name="TotalKill" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 125.0
+offset_right = 679.0
+offset_bottom = 200.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 50
+text = "Total kills: 0
+"
+
+[node name="PlayerHP" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 140.0
+offset_right = 679.0
+offset_bottom = 215.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 50
+text = "HP: 20
+"

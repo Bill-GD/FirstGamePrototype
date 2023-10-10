@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmvm86jsqlwui"]
+
+[ext_resource type="Texture2D" uid="uid://cstpx0wy0fuwq" path="res://assets/wooden_box.png" id="1_sai3k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0uv1n"]
+size = Vector2(22, 22)
+
+[node name="WoodenBox" type="RigidBody2D" groups=["wooden_boxes"]]
+z_index = 2
+collision_mask = 3
+gravity_scale = 0.0
+linear_damp = 40.0
+angular_damp = 50.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.6875, 0.6875)
+texture = ExtResource("1_sai3k")
+
+[node name="CollidingBox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_0uv1n")
