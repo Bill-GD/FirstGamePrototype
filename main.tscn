@@ -24,8 +24,6 @@ position = Vector2(589, 315)
 zoom = Vector2(2.5, 2.5)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Player/Camera"]
-scale = Vector2(2, 2)
-transform = Transform2D(2, 0, 0, 2, 0, 0)
 
 [node name="ControlOverlay" parent="Player/Camera/CanvasLayer" instance=ExtResource("4_86cf8")]
 offset_right = 115.0

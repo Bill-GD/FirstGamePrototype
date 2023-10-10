@@ -21,6 +21,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if game_over:
+		$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text(
+			'Can restart: ' + str($GameOverTimer.is_stopped()) + ' (' + str(snapped($GameOverTimer.time_left, 0.01)) + ')'
+		)
 		if Input.is_key_pressed(KEY_SPACE) and $GameOverTimer.is_stopped():
 			set_new_game()
 	else:
@@ -54,11 +57,11 @@ func _process(_delta):
 				is_attacking = false
 			
 		$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text(
-			'Speed up (shift): ' + str(is_sped_up) + 
+			'Speed up: ' + str(is_sped_up) + 
 			'\nMovement: ' + ' '.join(movement_keys) + 
-			'\nAttacking (left mouse/space): ' + str(is_attacking) +
-			'\nAttack mode (q) -> (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's): ' + ('fast' if fast_attack else 'normal') +
-			'\nEnemy spawn (z) -> (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's): ' + str(toggle_enemy_spawn)
+			'\nAttacking: ' + str(is_attacking) +
+			'\nAttack mode (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's): ' + ('fast' if fast_attack else 'normal') +
+			'\nEnemy spawn (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's): ' + str(toggle_enemy_spawn)
 		)
 
 
@@ -77,7 +80,7 @@ func _on_enemy_hit():
 
 func _on_player_hit():
 	score -= 1
-	max_enemy_count = 10 + (score / 5)
+	max_enemy_count = 10 + (max(0, score) / 5)
 	
 	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: ' + str($Player.current_hp)
 	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: ' + str(score)
@@ -129,11 +132,11 @@ func set_new_game():
 	$Player.show()
 	$EnemySpawnTimer.start()
 	$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text(
-		'Speed up (shift): ' + str(is_sped_up) + 
+		'Speed up: ' + str(is_sped_up) + 
 		'\nMovement: ' + ' '.join(['  ', '  ', '  ', '  ']) + 
-		'\nAttacking (left mouse/space): ' + str(is_attacking) +
-		'\nAttack mode (q) -> (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's): ' + ('fast' if fast_attack else 'normal') +
-		'\nEnemy spawn (z) -> (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's): ' + str(toggle_enemy_spawn)
+		'\nAttacking: ' + str(is_attacking) +
+		'\nAttack mode (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's): ' + ('fast' if fast_attack else 'normal') +
+		'\nEnemy spawn (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's): ' + str(toggle_enemy_spawn)
 	)
 	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: ' + str($Player.current_hp)
 	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: ' + str(score)

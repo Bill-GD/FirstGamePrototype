@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://wltpb7ynw1kb"]
+[gd_scene load_steps=3 format=3 uid="uid://wltpb7ynw1kb"]
 
 [ext_resource type="Script" path="res://control_overlay.gd" id="1_eh1m7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqgta"]
+bg_color = Color(0, 0, 0, 0.247059)
 
 [node name="ControlOverlay" type="Control"]
 layout_mode = 3
@@ -13,58 +16,91 @@ script = ExtResource("1_eh1m7")
 
 [node name="Controls" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 6.0
-offset_right = 679.0
-offset_bottom = 222.0
+offset_left = 8.0
+offset_right = 1488.0
+offset_bottom = 765.0
 scale = Vector2(0.2, 0.2)
-theme_override_font_sizes/font_size = 50
-text = "Speed up (shift): false
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
+text = "Speed up: false
 Movement: A S W D
-Attacking (left mouse): false
-Attack mode (q) -> (0s): normal
-Enemy spawn (z) -> (0s): true"
+Attacking: false
+Attack mode (0s): normal
+Enemy spawn (0s): true"
 
 [node name="Score" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 93.0
-offset_right = 679.0
-offset_bottom = 168.0
+offset_left = 8.0
+offset_top = 153.0
+offset_right = 1488.0
+offset_bottom = 293.0
 scale = Vector2(0.2, 0.2)
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "Score: 0
 "
 
 [node name="EnemyCount" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 109.0
-offset_right = 679.0
-offset_bottom = 184.0
+offset_left = 8.0
+offset_top = 181.0
+offset_right = 1488.0
+offset_bottom = 321.0
 scale = Vector2(0.2, 0.2)
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "Enemy count: 0 / 10
 "
 
 [node name="TotalKill" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 125.0
-offset_right = 679.0
-offset_bottom = 200.0
+offset_left = 8.0
+offset_top = 209.0
+offset_right = 1488.0
+offset_bottom = 349.0
 scale = Vector2(0.2, 0.2)
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "Total kills: 0
 "
 
 [node name="PlayerHP" type="Label" parent="."]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 140.0
-offset_right = 679.0
-offset_bottom = 215.0
+offset_left = 8.0
+offset_top = 237.0
+offset_right = 1488.0
+offset_bottom = 377.0
 scale = Vector2(0.2, 0.2)
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "HP: 20
 "
+
+[node name="Instructions" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -368.0
+offset_top = 8.0
+offset_right = 852.0
+offset_bottom = 1394.0
+grow_horizontal = 0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
+text = "Move: ASWD
+Sprint: Shift (Hold)
+Shoot: Left Mouse or Space (Hold)
+Aim: Mouse
+Change attack speed: Q
+Toggle enemy spawn: Z
+Restart (Game Over): Space
+
+-Max enemy count: 10 + (score / 5)
+-Normal attack: 1 point/kill
+-Fast attack: 0.25 point/kill
+-Decreases score and HP when hit
+-Enemies get faster every 2 kills
+-Player has 'i-frames'"
+autowrap_mode = 2
