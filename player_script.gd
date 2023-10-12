@@ -10,7 +10,7 @@ var current_hp: int = BASE_HP
 signal hit
 signal dead
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var direction: Vector2 = Input.get_vector('aswd_left', 'aswd_right', 'aswd_up', 'aswd_down')
 	can_speed_up = not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_SPACE))
 	

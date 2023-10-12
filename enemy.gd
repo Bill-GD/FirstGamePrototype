@@ -24,10 +24,7 @@ func _physics_process(delta):
 			print('enemy hit bullet')
 			hit.emit()
 			queue_free()
-#			get_node(collider.get_path()).queue_free()
 			collider.queue_free()
 		else:
 			move_and_collide(velocity * Vector2.DOWN * delta)
 			move_and_collide(velocity * Vector2.RIGHT * delta)
-#			get_parent().get_node('Bullet').queue_free()
-#			$iFrame.start()

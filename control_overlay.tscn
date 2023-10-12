@@ -25,10 +25,10 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "Speed up: false
 Movement: A S W D
 Attacking: false
-Attack mode (0s): normal
-Enemy spawn (0s): true"
+Attack mode: normal (0s)
+Enemy spawn: true (0s)"
 
-[node name="Score" type="Label" parent="."]
+[node name="HighScore" type="Label" parent="."]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 153.0
@@ -37,10 +37,9 @@ offset_bottom = 293.0
 scale = Vector2(0.2, 0.2)
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
-text = "Score: 0
-"
+text = "High Score: 0"
 
-[node name="EnemyCount" type="Label" parent="."]
+[node name="Score" type="Label" parent="."]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 181.0
@@ -49,10 +48,9 @@ offset_bottom = 321.0
 scale = Vector2(0.2, 0.2)
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
-text = "Enemy count: 0 / 10
-"
+text = "Score: 0"
 
-[node name="TotalKill" type="Label" parent="."]
+[node name="EnemyCount" type="Label" parent="."]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 209.0
@@ -61,10 +59,9 @@ offset_bottom = 349.0
 scale = Vector2(0.2, 0.2)
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
-text = "Total kills: 0
-"
+text = "Enemy count: 0 / 10"
 
-[node name="PlayerHP" type="Label" parent="."]
+[node name="TotalKill" type="Label" parent="."]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 237.0
@@ -73,8 +70,29 @@ offset_bottom = 377.0
 scale = Vector2(0.2, 0.2)
 theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
-text = "HP: 20
-"
+text = "Total kills: 0"
+
+[node name="BestKillCount" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 265.0
+offset_right = 1488.0
+offset_bottom = 405.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
+text = "Best Kill Count: 0"
+
+[node name="PlayerHP" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 293.0
+offset_right = 1488.0
+offset_bottom = 433.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
+text = "HP: 20"
 
 [node name="Instructions" type="Label" parent="."]
 layout_mode = 1

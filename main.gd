@@ -7,7 +7,9 @@ var is_attacking: bool = false
 var is_sped_up: bool = false
 var fast_attack: bool = false
 var score: float = 0
+var highscore: float = 0
 var total_kills: int = 0
+var best_kill_count: int = 0
 var enemy_count: int = 0
 var max_enemy_count: int = 10
 var toggle_enemy_spawn: bool = true
@@ -60,15 +62,15 @@ func _process(_delta):
 			'Speed up: ' + str(is_sped_up) + 
 			'\nMovement: ' + ' '.join(movement_keys) + 
 			'\nAttacking: ' + str(is_attacking) +
-			'\nAttack mode (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's): ' + ('fast' if fast_attack else 'normal') +
-			'\nEnemy spawn (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's): ' + str(toggle_enemy_spawn)
+			'\nAttack mode: ' + ('fast' if fast_attack else 'normal') + ' (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's)' +
+			'\nEnemy spawn: ' + str(toggle_enemy_spawn) + ' (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's)'
 		)
 
 
 func _on_enemy_hit():
-	score += 0.25 if fast_attack else 1
+	score += (0.25 if fast_attack else 1)
 	enemy_count = max (0, enemy_count - 1)
-	max_enemy_count = 10 + (score / 5)
+	max_enemy_count = 10 + int(score / 5)
 	total_kills += 1
 	if $EnemySpawnTimer.wait_time > 0.2:
 		$EnemySpawnTimer.wait_time -= 0.005
@@ -106,24 +108,34 @@ func _on_enemy_spawn_timer_timeout():
 
 
 func _on_player_dead():
+	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: 0'
+	if score > highscore:
+		highscore = score
+		$Player/Camera/CanvasLayer/ControlOverlay/HighScore.text = 'High Score: ' + str(highscore)
+	if total_kills > best_kill_count:
+		best_kill_count = total_kills
+		$Player/Camera/CanvasLayer/ControlOverlay/BestKillCount.text = 'Best Kill Count: ' + str(best_kill_count)
+	if score < 0: $Player/Camera/CanvasLayer/ControlOverlay/Score.text += ' (git gud)'
+	$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text('Press "SPACE" to restart')
+	
 	$EnemySpawnTimer.stop()
 	get_tree().call_group('enemies', 'queue_free')
 	$Player.hide()
 	$Player.set_physics_process(false)
 	game_over = true
 	$GameOverTimer.start()
-	$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text('Press "SPACE" to restart')
 	await get_tree().create_timer(1).timeout
 	$Player.position = Vector2(589, 315)
 
 
 func set_new_game():
-	game_over = false
+	get_tree().call_group('enemies', 'queue_free')
 	score = 0
 	max_enemy_count = 10
 	is_attacking = false
 	is_sped_up = false
 	fast_attack = false
+	$AttackCooldown.wait_time = 0.5
 	total_kills = 0
 	enemy_count = 0
 	$Player.current_hp = $Player.BASE_HP
@@ -135,10 +147,13 @@ func set_new_game():
 		'Speed up: ' + str(is_sped_up) + 
 		'\nMovement: ' + ' '.join(['  ', '  ', '  ', '  ']) + 
 		'\nAttacking: ' + str(is_attacking) +
-		'\nAttack mode (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's): ' + ('fast' if fast_attack else 'normal') +
-		'\nEnemy spawn (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's): ' + str(toggle_enemy_spawn)
+		'\nAttack mode: ' + ('fast' if fast_attack else 'normal') + ' (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's)' +
+		'\nEnemy spawn: ' + str(toggle_enemy_spawn) + ' (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's)'
 	)
 	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: ' + str($Player.current_hp)
 	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: ' + str(score)
 	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: ' + str(enemy_count) + '/' + str(max_enemy_count)
 	$Player/Camera/CanvasLayer/ControlOverlay/TotalKill.text = 'Total kills: ' + str(total_kills)
+	
+	await get_tree().create_timer(1).timeout
+	game_over = false
