@@ -15,6 +15,6 @@ func _on_body_entered(_body):
 	var colliding_bodies = get_colliding_bodies()
 	for collided_body in colliding_bodies:
 		if collided_body.is_in_group('walls') or collided_body.is_in_group('wooden_boxes'):
-			print('bullet collided with ' + collided_body.get_groups()[0])
+#			print('bullet collided with ' + collided_body.get_groups()[0])
 			queue_free()
 			break

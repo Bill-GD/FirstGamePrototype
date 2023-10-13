@@ -53,3 +53,7 @@ ui_shift={
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemies"
 2d_physics/layer_4="bullets"
+
+[navigation]
+
+2d/default_edge_connection_margin=32

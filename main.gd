@@ -23,9 +23,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if game_over:
-		$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text(
-			'Can restart: ' + str($GameOverTimer.is_stopped()) + ' (' + str(snapped($GameOverTimer.time_left, 0.01)) + ')'
-		)
+		$Player/Camera/CanvasLayer/ControlOverlay/Controls.text = 'Can restart: ' + str($GameOverTimer.is_stopped()) + ' (' + str(snapped($GameOverTimer.time_left, 0.01)) + ')'
 		if Input.is_key_pressed(KEY_SPACE) and $GameOverTimer.is_stopped():
 			set_new_game()
 	else:
@@ -57,14 +55,8 @@ func _process(_delta):
 				$AttackCooldown.start()
 			else:
 				is_attacking = false
-			
-		$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text(
-			'Speed up: ' + str(is_sped_up) + 
-			'\nMovement: ' + ' '.join(movement_keys) + 
-			'\nAttacking: ' + str(is_attacking) +
-			'\nAttack mode: ' + ('fast' if fast_attack else 'normal') + ' (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's)' +
-			'\nEnemy spawn: ' + str(toggle_enemy_spawn) + ' (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's)'
-		)
+		
+		$Player/Camera/CanvasLayer/ControlOverlay/Controls.text = 'Speed up: %s\n' % is_sped_up + 'Movement:\n' + 'Attacking: %s\n' % is_attacking + 'Attack mode: %s (%0.2fs)\n' % [('fast' if fast_attack else 'normal'), $AttackModeCooldown.time_left] + 'Enemy spawn: %s (%0.2fs)' % [toggle_enemy_spawn, $ToggleEnemySpawnCooldown.time_left]
 
 
 func _on_enemy_hit():
@@ -75,18 +67,18 @@ func _on_enemy_hit():
 	if $EnemySpawnTimer.wait_time > 0.2:
 		$EnemySpawnTimer.wait_time -= 0.005
 	
-	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: ' + str(score)
-	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: ' + str(enemy_count) + '/' + str(max_enemy_count)
-	$Player/Camera/CanvasLayer/ControlOverlay/TotalKill.text = 'Total kills: ' + str(total_kills)
+	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: %s' % score
+	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: %s/%s' % [enemy_count, max_enemy_count]
+	$Player/Camera/CanvasLayer/ControlOverlay/TotalKill.text = 'Total kills: %s' % total_kills
 
 
 func _on_player_hit():
 	score -= 1
 	max_enemy_count = 10 + (max(0, score) / 5)
 	
-	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: ' + str($Player.current_hp)
-	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: ' + str(score)
-	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: ' + str(enemy_count) + '/' + str(max_enemy_count)
+	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: %s' % $Player.current_hp
+	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: %s' % score
+	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: %s/%s' % [enemy_count, max_enemy_count]
 
 
 func _on_enemy_spawn_timer_timeout():
@@ -94,29 +86,33 @@ func _on_enemy_spawn_timer_timeout():
 		return
 	
 	var enemy_spawn_location = $EnemyPath/EnemySpawnLocation
-	enemy_spawn_location.progress_ratio = randf()
-	
 	var enemy = enemy_scene.instantiate()
-	
-	enemy.position = enemy_spawn_location.position
+	enemy.player = $Player
+	while true:
+		enemy_spawn_location.progress_ratio = randf()
+		
+		enemy.position = enemy_spawn_location.position
+		
+		if (enemy.position - $Player.position).length() > 200:
+			break
 #	enemy.rotation = ($Player.position - enemy.position).normalized().angle()
 	enemy.hit.connect(_on_enemy_hit)
 	
 	add_child(enemy)
 	enemy_count += 1
-	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: ' + str(enemy_count) + '/' + str(max_enemy_count)
+	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: %s/%s' % [enemy_count, max_enemy_count]
 
 
 func _on_player_dead():
 	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: 0'
 	if score > highscore:
 		highscore = score
-		$Player/Camera/CanvasLayer/ControlOverlay/HighScore.text = 'High Score: ' + str(highscore)
+		$Player/Camera/CanvasLayer/ControlOverlay/HighScore.text = 'High Score: %s' % highscore
 	if total_kills > best_kill_count:
 		best_kill_count = total_kills
-		$Player/Camera/CanvasLayer/ControlOverlay/BestKillCount.text = 'Best Kill Count: ' + str(best_kill_count)
+		$Player/Camera/CanvasLayer/ControlOverlay/BestKillCount.text = 'Best Kill Count: %s' % best_kill_count
 	if score < 0: $Player/Camera/CanvasLayer/ControlOverlay/Score.text += ' (git gud)'
-	$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text('Press "SPACE" to restart')
+	$Player/Camera/CanvasLayer/ControlOverlay/Controls.text = 'Press "SPACE" to restart'
 	
 	$EnemySpawnTimer.stop()
 	get_tree().call_group('enemies', 'queue_free')
@@ -143,17 +139,12 @@ func set_new_game():
 #	$Player.position = Vector2(589, 315)
 	$Player.show()
 	$EnemySpawnTimer.start()
-	$Player/Camera/CanvasLayer/ControlOverlay.update_controls_text(
-		'Speed up: ' + str(is_sped_up) + 
-		'\nMovement: ' + ' '.join(['  ', '  ', '  ', '  ']) + 
-		'\nAttacking: ' + str(is_attacking) +
-		'\nAttack mode: ' + ('fast' if fast_attack else 'normal') + ' (' + str(snapped($AttackModeCooldown.time_left, 0.01)) + 's)' +
-		'\nEnemy spawn: ' + str(toggle_enemy_spawn) + ' (' + str(snapped($ToggleEnemySpawnCooldown.time_left, 0.01)) + 's)'
-	)
-	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: ' + str($Player.current_hp)
-	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: ' + str(score)
-	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: ' + str(enemy_count) + '/' + str(max_enemy_count)
-	$Player/Camera/CanvasLayer/ControlOverlay/TotalKill.text = 'Total kills: ' + str(total_kills)
+	$Player/Camera/CanvasLayer/ControlOverlay/Controls.text = 'Speed up: %s\n' % is_sped_up + 'Movement:\n' + 'Attacking: %s\n' % is_attacking + 'Attack mode: %s (%0.2fs)\n' % [('fast' if fast_attack else 'normal'), $AttackModeCooldown.time_left] + 'Enemy spawn: %s (%0.2fs)' % [toggle_enemy_spawn, $ToggleEnemySpawnCooldown.time_left]
+
+	$Player/Camera/CanvasLayer/ControlOverlay/PlayerHP.text = 'HP: %s' % $Player.current_hp
+	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: %s' % score
+	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: %s/%s' % [enemy_count, max_enemy_count]
+	$Player/Camera/CanvasLayer/ControlOverlay/TotalKill.text = 'Total kills: %s' % total_kills
 	
 	await get_tree().create_timer(1).timeout
 	game_over = false
