@@ -13,7 +13,7 @@ func _ready():
 	update_path()
 
 func _physics_process(delta: float) -> void:
-	if (position - player.global_position).length() > 120:
+	if (position - player.global_position).length() > 60 * player.get_node('Light').scale.x:
 		$Sprite2D.hide()
 	else:
 		$Sprite2D.show()

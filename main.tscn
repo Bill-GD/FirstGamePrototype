@@ -18,13 +18,13 @@ layer_0/tile_data = PackedInt32Array(458749, 0, 2, 1245181, 0, 2, 1310717, 65536
 
 [node name="Player" parent="." instance=ExtResource("2_cq8w6")]
 light_mask = 0
-position = Vector2(589, 315)
+position = Vector2(591, 330)
 
 [node name="AttackCooldown" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
 
-[node name="AttackModeCooldown" type="Timer" parent="."]
+[node name="WeaponSwapCooldown" type="Timer" parent="."]
 one_shot = true
 
 [node name="ToggleEnemySpawnCooldown" type="Timer" parent="."]

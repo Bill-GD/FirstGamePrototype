@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var BASE_SPEED: int = 200
+var BASE_SPEED: int = 150
 var BASE_HP: int = 20
 
 var SPRINT_SPEED: float = BASE_SPEED * 2

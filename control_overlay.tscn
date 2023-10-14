@@ -22,7 +22,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "Speed up: false
 Movement: A S W D
 Attacking: false
-Attack mode: normal (0s)
+Weapon: HANDGUN (0s)
 Enemy spawn: true (0s)"
 
 [node name="HighScore" type="Label" parent="."]
@@ -108,14 +108,13 @@ text = "Move: ASWD
 Sprint: Shift (Hold)
 Shoot: Left Mouse or Space (Hold)
 Aim: Mouse
-Change attack speed: Q
+Change weapon: 1-4
 Toggle enemy spawn: Z
 Restart (Game Over): Space
 
 -Max enemy count: 10 + (score / 5)
--Normal attack: 1 point/kill
--Fast attack: 0.25 point/kill
+-Different weapon, different score
 -Decreases score and HP when hit
--Enemies get faster every 2 kills
+-Enemies get faster every 2 points
 -Player has 'i-frames'"
 autowrap_mode = 2
