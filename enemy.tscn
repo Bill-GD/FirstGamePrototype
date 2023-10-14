@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://ckipen41agciv"]
+[gd_scene load_steps=5 format=3 uid="uid://ckipen41agciv"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_roh81"]
 [ext_resource type="Texture2D" uid="uid://ps0bd2bgt7rf" path="res://assets/bullet.png" id="2_shium"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_n3pc5"]
+polygon = PackedVector2Array(4, 3, -4, 3, -4, -3, 4, -3)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_de1k6"]
 size = Vector2(14, 20)
@@ -14,12 +17,19 @@ motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_roh81")
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2(0, 6.70552e-07)
+rotation = 1.57079
+scale = Vector2(2.5, 2.33333)
+occluder = SubResource("OccluderPolygon2D_n3pc5")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(6.82121e-12, -1.90735e-06)
 rotation = 3.14159
 shape = SubResource("RectangleShape2D_de1k6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+light_mask = 2
 texture_filter = 1
 position = Vector2(0, 6.70552e-07)
 rotation = 1.57079

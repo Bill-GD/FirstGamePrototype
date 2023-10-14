@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://bpao0e3xysafo"]
+[gd_scene load_steps=6 format=3 uid="uid://bpao0e3xysafo"]
 
 [ext_resource type="Script" path="res://player_script.gd" id="1_8grue"]
 [ext_resource type="Texture2D" uid="uid://dwb3od4jdv07l" path="res://icon.svg" id="2_8236c"]
+[ext_resource type="Texture2D" uid="uid://bj745hlchik5m" path="res://assets/2d_lights_and_shadows_neutral_point_light.png" id="3_nu24m"]
+[ext_resource type="PackedScene" uid="uid://wltpb7ynw1kb" path="res://control_overlay.tscn" id="4_7oon2"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lfypc"]
+polygon = PackedVector2Array(64, -58.1, 64, 55, 55.7, 64, -56.3, 64, -64, 58, -64, 55, -64, -55.1, -58.1, -64, -55.5, -64, 55.1, -64)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 2
@@ -13,6 +18,11 @@ script = ExtResource("1_8grue")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(8, -10, 10, -8, 10, 8, 8, 10, -8, 10, -10, 8, -10, -8, -8, -10)
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+scale = Vector2(0.15625, 0.15625)
+occluder = SubResource("OccluderPolygon2D_lfypc")
+occluder_light_mask = 0
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(0.15625, 0.15625)
@@ -20,3 +30,27 @@ texture = ExtResource("2_8236c")
 
 [node name="iFrame" type="Timer" parent="."]
 one_shot = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+z_index = 1
+rotation = -1.57079
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_item_cull_mask = 3
+texture = ExtResource("3_nu24m")
+
+[node name="PointLight2DChild" type="PointLight2D" parent="PointLight2D"]
+z_index = 1
+range_item_cull_mask = 2
+shadow_enabled = true
+shadow_item_cull_mask = 2
+texture = ExtResource("3_nu24m")
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(2.5, 2.5)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera"]
+
+[node name="ControlOverlay" parent="Camera/CanvasLayer" instance=ExtResource("4_7oon2")]
+offset_right = 115.0
+offset_bottom = 57.0

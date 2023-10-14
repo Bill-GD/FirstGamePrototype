@@ -17,6 +17,7 @@ func _physics_process(_delta):
 	velocity = direction * (SPRINT_SPEED if Input.is_action_pressed('ui_shift') and can_speed_up else BASE_SPEED)
 	$Sprite2D.rotation = (get_global_mouse_position() - position).angle()
 	$CollisionPolygon2D.rotation = $Sprite2D.rotation
+	$LightOccluder2D.rotation = $Sprite2D.rotation
 
 	move_and_slide()
 	
