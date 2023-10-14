@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://cbrrragisflmx" path="res://assets/bullet_alt.png" id="2_l5uhf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qssrf"]
-radius = 2.0
-height = 8.0
+radius = 3.33333
+height = 16.6667
 
 [node name="Bullet" type="RigidBody2D" groups=["bullets"]]
 texture_filter = 1
@@ -17,11 +17,12 @@ script = ExtResource("1_wvcuu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708
+scale = Vector2(0.6, 0.6)
 shape = SubResource("CapsuleShape2D_qssrf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_l5uhf")
 
 [node name="DespawnTimer" type="Timer" parent="."]

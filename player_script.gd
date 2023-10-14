@@ -1,11 +1,13 @@
 extends CharacterBody2D
 
-var BASE_SPEED: int = 150
-var BASE_HP: int = 20
+const BASE_SPEED: int = 150
+const BASE_HP: int = 20
+const BASE_ARMOR: int = 10
+const SPRINT_SPEED: float = BASE_SPEED * 2
 
-var SPRINT_SPEED: float = BASE_SPEED * 2
 var can_speed_up: bool = true
 var current_hp: int = BASE_HP
+var current_armor: int = BASE_ARMOR
 
 signal hit
 signal dead
@@ -21,6 +23,9 @@ func _physics_process(_delta):
 
 	move_and_slide()
 	
+	if current_armor < BASE_ARMOR and $ArmorRegenDelay.is_stopped() and $ArmorRegen.is_stopped():
+		$ArmorRegen.start()
+	
 	var collision = get_last_slide_collision()
 	if collision:
 		var collider = collision.get_collider()
@@ -29,5 +34,12 @@ func _physics_process(_delta):
 				dead.emit()
 			else:
 				hit.emit()
-				current_hp -= 1
+				if current_armor > 0: current_armor -= 1
+				else: current_hp -= 1
 				$iFrame.start()
+				$ArmorRegen.stop()
+				$ArmorRegenDelay.start()
+
+func _on_armor_regen_timeout():
+	current_armor += 1
+	if current_armor == BASE_ARMOR: $ArmorRegen.stop()

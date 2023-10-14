@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 const BASE_SPEED: int = 60
+
 @onready var speed = BASE_SPEED + (get_parent().score / 2)
 
 @export var player: Node2D
@@ -13,10 +14,11 @@ func _ready():
 	update_path()
 
 func _physics_process(delta: float) -> void:
-	if (position - player.global_position).length() > 60 * player.get_node('Light').scale.x:
-		$Sprite2D.hide()
-	else:
-		$Sprite2D.show()
+	if get_parent().night_time:
+		if (position - player.global_position).length() > 60 * player.get_node('Light').scale.x:
+			$Sprite2D.hide()
+		else:
+			$Sprite2D.show()
 #	$Direction.queue_redraw()
 #	direction = (get_parent().get_node('Player').position - global_position).normalized()
 	direction = (nav_agent.get_next_path_position() - position).normalized() if (position - player.global_position).length() <= 400 else Vector2.ZERO

@@ -55,3 +55,12 @@ zoom = Vector2(4, 4)
 [node name="ControlOverlay" parent="Camera/CanvasLayer" instance=ExtResource("4_7oon2")]
 offset_right = 115.0
 offset_bottom = 57.0
+
+[node name="ArmorRegenDelay" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="ArmorRegen" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="ArmorRegen" to="." method="_on_armor_regen_timeout"]

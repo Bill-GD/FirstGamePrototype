@@ -91,6 +91,17 @@ theme_override_font_sizes/font_size = 100
 theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
 text = "HP: 20"
 
+[node name="PlayerArmor" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 321.0
+offset_right = 1488.0
+offset_bottom = 461.0
+scale = Vector2(0.2, 0.2)
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqgta")
+text = "Armor: 10"
+
 [node name="Instructions" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 1

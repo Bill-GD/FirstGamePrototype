@@ -13,13 +13,18 @@ var enemy_count: int = 0
 var max_enemy_count: int = 10
 var toggle_enemy_spawn: bool = true
 var game_over: bool = false
-var score_per_kill: int = 1
+var score_per_kill: float = 1
+var night_time: bool = randf() > 0.5
 
 enum WEAPONS {HANDGUN, SHOTGUN, ASSAULT, SNIPER}
 var current_weapon: WEAPONS = WEAPONS.HANDGUN
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if not night_time:
+		$CanvasModulate.hide()
+		$Player/Light.hide()
+	
 	$AttackCooldown.start()
 	$EnemySpawnTimer.start()
 	set_player_attack_speed(current_weapon)
@@ -55,7 +60,7 @@ func _process(_delta):
 		if not movement_keys.has('W') and Input.is_action_pressed('aswd_up'): movement_keys[2] = 'W'
 		if not movement_keys.has('D') and Input.is_action_pressed('aswd_right'): movement_keys[3] = 'D'
 		
-		
+		$Player/Camera/CanvasLayer/ControlOverlay/PlayerArmor.text = 'Armor: %s (%0.2fs, %0.2fs)' % [$Player.current_armor, $Player/ArmorRegenDelay.time_left, $Player/ArmorRegen.time_left]
 		$Player/Camera/CanvasLayer/ControlOverlay/Controls.text = 'Speed up: %s\n' % is_sped_up + 'Movement:\n' + 'Attacking: %s\n' % is_attacking + 'Weapon: %s (%0.2fs)\n' % [WEAPONS.keys()[current_weapon], $WeaponSwapCooldown.time_left] + 'Enemy spawn: %s (%0.2fs)' % [toggle_enemy_spawn, $ToggleEnemySpawnCooldown.time_left]
 
 func player_shoot():
@@ -92,9 +97,9 @@ func change_weapon(index: int) -> void:
 		
 func set_player_attack_speed(weapon: WEAPONS):
 	if weapon == WEAPONS.SNIPER:
-		$AttackCooldown.wait_time = 2
 		$Player/Camera.zoom = Vector2(1, 1)
 		$Player/Light.scale = Vector2(10, 10)
+		$AttackCooldown.wait_time = 2
 		score_per_kill = 4
 	else:
 		$Player/Camera.zoom = Vector2(4, 4)
@@ -118,7 +123,7 @@ func _on_enemy_hit():
 	if $EnemySpawnTimer.wait_time > 0.2:
 		$EnemySpawnTimer.wait_time -= 0.005
 	
-	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: %s' % score
+	$Player/Camera/CanvasLayer/ControlOverlay/Score.text = 'Score: %.2f' % score
 	$Player/Camera/CanvasLayer/ControlOverlay/EnemyCount.text = 'Enemy count: %s/%s' % [enemy_count, max_enemy_count]
 	$Player/Camera/CanvasLayer/ControlOverlay/TotalKill.text = 'Total kills: %s' % total_kills
 
